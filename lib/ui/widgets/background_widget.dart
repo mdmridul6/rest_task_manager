@@ -7,11 +7,6 @@ class BackgroundWidget extends StatelessWidget {
 
   final Widget child;
 
-  
-  Future<void> _moveToNextScreen() async{
-    await Future.delayed(Duration(seconds: 2));
-
-  }
 
   @override
   Widget build(BuildContext context) {
