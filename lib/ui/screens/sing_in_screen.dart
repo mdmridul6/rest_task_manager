@@ -20,7 +20,7 @@ class _SingInScreenState extends State<SingInScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 60),
-                Text('Sing In'),
+                Text('Sing In', style: Theme.of(context).textTheme.titleLarge),
                 SizedBox(height: 16),
                 TextFormField(
                   decoration: InputDecoration(hintText: 'Email'),
