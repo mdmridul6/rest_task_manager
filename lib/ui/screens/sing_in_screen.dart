@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:rest_task_manager/ui/utility/app_color.dart';
 import 'package:rest_task_manager/ui/widgets/background_widget.dart';
 
 class SingInScreen extends StatefulWidget {
@@ -20,8 +22,11 @@ class _SingInScreenState extends State<SingInScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 60),
-                  Text('Sing In', style: Theme.of(context).textTheme.titleLarge),
+                  SizedBox(height: 80),
+                  Text(
+                    'Get Start With',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                   SizedBox(height: 16),
                   TextFormField(
                     decoration: InputDecoration(hintText: 'Email'),
@@ -35,7 +40,38 @@ class _SingInScreenState extends State<SingInScreen> {
                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {},
-                    child: Icon(Icons.arrow_forward_ios_sharp),
+                    child: Icon(
+                      Icons.arrow_circle_right_outlined,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Center(
+                    child: Column(
+                      children: [
+                        TextButton(
+                          onPressed: () {},
+                          child: Text('Forgot password'),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: "Don't have and account",
+                            style: TextStyle(
+                              color: Colors.black.withValues(alpha: 0.8),
+                              letterSpacing: 0.4,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "Sing up",
+                                style: TextStyle(color: AppColor.primaryColor),
+                                recognizer:
+                                    TapGestureRecognizer()..onTap = () {},
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
