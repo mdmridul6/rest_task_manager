@@ -55,7 +55,7 @@ class _SingInScreenState extends State<SingInScreen> {
                         ),
                         RichText(
                           text: TextSpan(
-                            text: "Don't have and account",
+                            text: "Don't have and account? ",
                             style: TextStyle(
                               color: Colors.black.withValues(alpha: 0.8),
                               letterSpacing: 0.4,
