@@ -8,6 +8,7 @@ class TaskManagerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: SplashScreen(),
       theme: _lightThemeData(),
       themeMode: ThemeMode.system,
@@ -18,6 +19,11 @@ class TaskManagerApp extends StatelessWidget {
     return ThemeData(
       textTheme: TextTheme(
         titleLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        titleSmall: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: Colors.grey,
+        ),
       ),
       // brightness: Brightness.dark,
       inputDecorationTheme: InputDecorationTheme(

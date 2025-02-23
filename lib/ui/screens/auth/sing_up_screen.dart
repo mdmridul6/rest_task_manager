@@ -37,7 +37,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                       'Join With Us',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: 24),
                     TextFormField(
                       controller: _firstNameTEController,
                       decoration: InputDecoration(hintText: 'First Name'),
@@ -84,7 +84,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     Center(
                       child: RichText(
                         text: TextSpan(
-                          text: "Already have account! ",
+                          text: "Already have account? ",
                           style: TextStyle(
                             color: Colors.black.withValues(alpha: 0.8),
                             letterSpacing: 0.4,

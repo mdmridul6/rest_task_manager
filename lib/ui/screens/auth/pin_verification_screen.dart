@@ -24,7 +24,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
         child: SingleChildScrollView(
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(24),
               child: Form(
                 key: _fromKey,
                 child: Column(
@@ -42,6 +42,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                     SizedBox(height: 16),
 
                     PinCodeTextField(
+                      keyboardType: TextInputType.number,
                       length: 6,
                       obscureText: false,
                       animationType: AnimationType.fade,
@@ -54,6 +55,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                         selectedFillColor: Colors.white,
                         selectedColor: AppColor.primaryColor,
                         inactiveColor: Colors.white,
+                        inactiveFillColor: Colors.white,
                       ),
                       animationDuration: Duration(milliseconds: 300),
                       backgroundColor: Colors.transparent,
@@ -69,13 +71,13 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                           _onTapPinVerificationButton();
                         }
                       },
-                      child:Text('Verify'),
+                      child: Text('Verify'),
                     ),
                     SizedBox(height: 16),
                     Center(
                       child: RichText(
                         text: TextSpan(
-                          text: "Already have account! ",
+                          text: "Already have account? ",
                           style: TextStyle(
                             color: Colors.black.withValues(alpha: 0.8),
                             letterSpacing: 0.4,
@@ -109,10 +111,13 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
       (context) => false,
     );
   }
-  void _onTapPinVerificationButton() {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ResetPasswordScreen()));
-  }
 
+  void _onTapPinVerificationButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ResetPasswordScreen()),
+    );
+  }
 
   @override
   void dispose() {

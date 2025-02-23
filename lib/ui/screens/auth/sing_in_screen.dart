@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:rest_task_manager/ui/screens/auth/email_verification_screen.dart';
 import 'package:rest_task_manager/ui/screens/auth/sing_up_screen.dart';
 import 'package:rest_task_manager/ui/utility/app_color.dart';
 import 'package:rest_task_manager/ui/widgets/background_widget.dart';
@@ -23,7 +24,7 @@ class _SingInScreenState extends State<SingInScreen> {
         child: SingleChildScrollView(
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(24),
               child: Form(
                 key: _fromKey,
                 child: Column(
@@ -31,7 +32,7 @@ class _SingInScreenState extends State<SingInScreen> {
                   children: [
                     SizedBox(height: 80),
                     Text(
-                      'Get Start With',
+                      'Get Started With',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     SizedBox(height: 16),
@@ -66,7 +67,7 @@ class _SingInScreenState extends State<SingInScreen> {
                       child: Column(
                         children: [
                           TextButton(
-                            onPressed: () {},
+                            onPressed: _onTapForgetPasswordButton,
                             child: Text('Forgot password'),
                           ),
                           RichText(
@@ -106,6 +107,13 @@ class _SingInScreenState extends State<SingInScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SingUpScreen()),
+    );
+  }
+
+  void _onTapForgetPasswordButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EmailVerificationScreen()),
     );
   }
 

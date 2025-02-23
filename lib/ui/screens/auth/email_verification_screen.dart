@@ -25,7 +25,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         child: SingleChildScrollView(
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(24),
               child: Form(
                 key: _fromKey,
                 child: Column(
@@ -62,7 +62,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                     Center(
                       child: RichText(
                         text: TextSpan(
-                          text: "Already have account! ",
+                          text: "Already have account? ",
                           style: TextStyle(
                             color: Colors.black.withValues(alpha: 0.8),
                             letterSpacing: 0.4,
