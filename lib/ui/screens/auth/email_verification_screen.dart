@@ -15,10 +15,7 @@ class EmailVerificationScreen extends StatefulWidget {
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final TextEditingController _emailTEController = TextEditingController();
-  final TextEditingController _passwordTEController = TextEditingController();
-  final TextEditingController _firstNameTEController = TextEditingController();
-  final TextEditingController _lastNameTEController = TextEditingController();
-  final TextEditingController _mobileTEController = TextEditingController();
+
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
 
   @override
@@ -107,10 +104,6 @@ void _onTapEmailVerificationButton() {
   @override
   void dispose() {
     _emailTEController.dispose();
-    _passwordTEController.dispose();
-    _firstNameTEController.dispose();
-    _lastNameTEController.dispose();
-    _mobileTEController.dispose();
     super.dispose();
   }
 }
