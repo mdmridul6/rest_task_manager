@@ -35,7 +35,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Text(
-                      'Minimum length password 8 character with letter and cumber combination ',
+                      'Minimum length password 8 character with letter and number combination',
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     SizedBox(height: 16),

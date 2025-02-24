@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:rest_task_manager/ui/screens/auth/email_verification_screen.dart';
 import 'package:rest_task_manager/ui/screens/auth/sing_up_screen.dart';
+import 'package:rest_task_manager/ui/screens/tasks/main_bottom_nav_screen.dart';
 import 'package:rest_task_manager/ui/utility/app_color.dart';
 import 'package:rest_task_manager/ui/widgets/background_widget.dart';
 
@@ -51,10 +52,7 @@ class _SingInScreenState extends State<SingInScreen> {
                     ElevatedButton(
                       onPressed: () {
                         if (_fromKey.currentState!.validate()) {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => {}),
-                          // );
+                          _onTapSingInButton();
                         }
                       },
                       child: Icon(
@@ -107,6 +105,13 @@ class _SingInScreenState extends State<SingInScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SingUpScreen()),
+    );
+  }
+
+  void _onTapSingInButton() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => MainBottomNavScreen()),
     );
   }
 
