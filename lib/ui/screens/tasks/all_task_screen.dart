@@ -28,7 +28,7 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              'Jone doye',
+              'Jon doe',
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
             Text(
