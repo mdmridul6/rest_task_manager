@@ -4,6 +4,7 @@ import 'package:rest_task_manager/ui/screens/tasks/canceled_task_screen.dart';
 import 'package:rest_task_manager/ui/screens/tasks/completed_task_screen.dart';
 import 'package:rest_task_manager/ui/screens/tasks/in_progress_task_screen.dart';
 import 'package:rest_task_manager/ui/utility/app_color.dart';
+import 'package:rest_task_manager/ui/widgets/profile_app_bar.dart';
 
 class MainBottomNavScreen extends StatefulWidget {
   const MainBottomNavScreen({super.key});
@@ -25,6 +26,7 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: profileAppbar(),
       body: _screen[_selectedTabIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTabIndex,
@@ -50,6 +52,7 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
           ),
         ],
       ),
+
     );
   }
 }

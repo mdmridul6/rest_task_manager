@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rest_task_manager/ui/screens/tasks/new_task_screen.dart';
 import 'package:rest_task_manager/ui/utility/app_color.dart';
-import 'package:rest_task_manager/ui/widgets/network_cashed_image.dart';
+import 'package:rest_task_manager/ui/widgets/task_item.dart';
+import 'package:rest_task_manager/ui/widgets/task_summery_card.dart';
 
 class AllTaskScreen extends StatefulWidget {
   const AllTaskScreen({super.key});
@@ -13,41 +15,50 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.primaryColor,
-        leading: Padding(
-          padding: const EdgeInsets.all(8),
-          child: CircleAvatar(
-            child: NetworkCashedImage(
-              url:
-                  'https://www.torrentbd.net/posters/C1dcoocS8XLX4WZpxZRfDwYY32176689.jpg',
-            ),
-          ),
-        ),
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
           children: [
-            Text(
-              'Jon doe',
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-            Text(
-              'jone@gmail.com',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-                fontWeight: FontWeight.w400,
+            _buildSummerySection(),
+            const SizedBox(height: 8),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return TaskItem();
+                },
               ),
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.logout, color: Colors.white),
-          ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: AppColor.primaryColor,
+        foregroundColor: AppColor.whiteColor,
+        onPressed: _onTapFloatingActionButton,
+        label: Text('Add Task'),
+        icon: Icon(Icons.add),
+      ),
+    );
+  }
+
+  SingleChildScrollView _buildSummerySection() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          TaskSummeryCard(title: 'New Task', count: '34'),
+          TaskSummeryCard(title: 'Completed', count: '34'),
+          TaskSummeryCard(title: 'In Progress', count: '34'),
+          TaskSummeryCard(title: 'Cancel', count: '34'),
         ],
       ),
+    );
+  }
+  void _onTapFloatingActionButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NewTaskScreen()),
     );
   }
 }
