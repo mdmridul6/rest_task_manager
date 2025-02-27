@@ -13,7 +13,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: profileAppbar(),
+      appBar: profileAppBar(context),
       body: BackgroundWidget(
         child: Padding(
           padding: EdgeInsets.all(16),
