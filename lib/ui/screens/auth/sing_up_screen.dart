@@ -178,6 +178,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
 
     if (response.isSuccess == true) {
       if (mounted) {
+        _clearInput();
         showSnackBarMessage(context, "Registration Successful");
       }
     } else {
@@ -197,7 +198,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
     // );
   }
 
-  void clearInput() {
+  void _clearInput() {
     _firstNameTEController.clear();
     _lastNameTEController.clear();
     _emailTEController.clear();
