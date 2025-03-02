@@ -25,6 +25,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
 
   bool _regInProgress = false;
+  bool _hidePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +96,23 @@ class _SingUpScreenState extends State<SingUpScreen> {
                     ),
                     SizedBox(height: 8),
                     TextFormField(
+                      obscureText: _hidePassword,
                       controller: _passwordTEController,
-                      decoration: InputDecoration(hintText: 'Password'),
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            _hidePassword = !_hidePassword;
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            _hidePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: AppColor.primaryColor,
+                          ),
+                        ),
+                      ),
                       validator: (String? value) {
                         if (value?.trim().isEmpty ?? true) {
                           return "Enter password";
@@ -111,6 +127,8 @@ class _SingUpScreenState extends State<SingUpScreen> {
                       replacement: Center(child: CircularProgressIndicator()),
                       child: ElevatedButton(
                         onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+
                           if (_fromKey.currentState!.validate()) {
                             _onTapSingUpButton();
                           }
@@ -179,7 +197,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
     if (response.isSuccess == true) {
       if (mounted) {
         _clearInput();
-        showSnackBarMessage(context, "Registration Successful");
+        showSnackBarMessage(context, "Registration Successful",true);
       }
     } else {
       if (mounted) {

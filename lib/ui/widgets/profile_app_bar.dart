@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rest_task_manager/ui/controller/auth_controller.dart';
+import 'package:rest_task_manager/ui/screens/auth/sing_in_screen.dart';
 import 'package:rest_task_manager/ui/screens/update_profile_screen.dart';
 import 'package:rest_task_manager/ui/utility/app_color.dart';
 import 'package:rest_task_manager/ui/widgets/network_cashed_image.dart';
@@ -42,7 +44,19 @@ AppBar profileAppBar(context, [bool isUpdateProfile = false]) {
     ),
     actions: [
       IconButton(
-        onPressed: () {},
+        onPressed: () async {
+          // AuthController.clearAllData();
+          final data = await AuthController.getUserData();
+          debugPrint('=======================================================');
+          debugPrint(data!.firstName);
+          debugPrint('=======================================================');
+
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => SingInScreen()),
+            (route) => false,
+          );
+        },
         icon: Icon(Icons.logout, color: Colors.white),
       ),
     ],

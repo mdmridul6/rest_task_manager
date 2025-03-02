@@ -1,10 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:rest_task_manager/data/model/login_model.dart';
+import 'package:rest_task_manager/data/model/network_response.dart';
+import 'package:rest_task_manager/data/network_caller/network_caller.dart';
+import 'package:rest_task_manager/data/utility/app_urls.dart';
+import 'package:rest_task_manager/ui/controller/auth_controller.dart';
 import 'package:rest_task_manager/ui/screens/auth/email_verification_screen.dart';
 import 'package:rest_task_manager/ui/screens/auth/sing_up_screen.dart';
 import 'package:rest_task_manager/ui/screens/tasks/main_bottom_nav_screen.dart';
 import 'package:rest_task_manager/ui/utility/app_color.dart';
 import 'package:rest_task_manager/ui/widgets/background_widget.dart';
+import 'package:rest_task_manager/ui/widgets/show_shack_bar_message.dart';
 
 class SingInScreen extends StatefulWidget {
   const SingInScreen({super.key});
@@ -44,6 +50,7 @@ class _SingInScreenState extends State<SingInScreen> {
                     ),
                     SizedBox(height: 8),
                     TextFormField(
+                      obscureText: true,
                       controller: _passwordTEController,
                       decoration: InputDecoration(hintText: 'Password'),
                       keyboardType: TextInputType.visiblePassword,
@@ -109,10 +116,40 @@ class _SingInScreenState extends State<SingInScreen> {
   }
 
   void _onTapSingInButton() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => MainBottomNavScreen()),
+    _singInRequest();
+  }
+
+  Future<void> _singInRequest() async {
+    Map<String, String> inputBody = {
+      'email': _emailTEController.text.trim(),
+      'password': _passwordTEController.text,
+    };
+    NetworkResponse response = await NetworkCaller.postRequest(
+      AppUrls.logInUrl,
+      inputBody,
     );
+
+    if (response.statusCode == 200 && response.isSuccess == true) {
+      LoginModel loginModel = LoginModel.fromJson(response.responseData);
+
+      AuthController.saveUserAccessToken(loginModel.token!);
+      AuthController.saveUserData(loginModel.userModel!);
+      // loginModel.userModel = null;
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainBottomNavScreen()),
+        );
+      }
+    } else {
+      if (mounted) {
+        showSnackBarMessage(
+          context,
+          response.errorMessage ?? "User credentials does not match",
+        );
+      }
+    }
   }
 
   void _onTapForgetPasswordButton() {

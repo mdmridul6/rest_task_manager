@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:rest_task_manager/data/model/network_response.dart';
 import 'package:http/http.dart';
 
@@ -8,7 +8,11 @@ class NetworkCaller {
     try {
       Uri uri = Uri.parse(url);
       Response response = await get(uri);
+      debugPrint('=======================================================');
+      debugPrint(response.body);
+      debugPrint('=======================================================');
       final decodeData = jsonDecode(response.body);
+
       if (response.statusCode == 200) {
         return NetworkResponse(
           statusCode: response.statusCode,
@@ -41,6 +45,9 @@ class NetworkCaller {
         body: jsonEncode(body),
         headers: {'content-type': 'application/json'},
       );
+      debugPrint('=======================================================');
+      debugPrint(response.body);
+      debugPrint('=======================================================');
       final decodeData = jsonDecode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return NetworkResponse(
@@ -52,6 +59,7 @@ class NetworkCaller {
         return NetworkResponse(
           statusCode: response.statusCode,
           isSuccess: false,
+          errorMessage: decodeData['errorMessage'],
         );
       }
     } catch (error) {
