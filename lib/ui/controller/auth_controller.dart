@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:rest_task_manager/data/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
