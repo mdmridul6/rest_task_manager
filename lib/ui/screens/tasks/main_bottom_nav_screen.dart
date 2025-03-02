@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rest_task_manager/ui/controller/auth_controller.dart';
 import 'package:rest_task_manager/ui/screens/tasks/all_task_screen.dart';
 import 'package:rest_task_manager/ui/screens/tasks/canceled_task_screen.dart';
 import 'package:rest_task_manager/ui/screens/tasks/completed_task_screen.dart';
