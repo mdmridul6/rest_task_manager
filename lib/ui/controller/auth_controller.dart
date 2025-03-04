@@ -29,7 +29,6 @@ class AuthController {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? data = sharedPreferences.getString(_userDataKey);
     if (data == null) return null;
-
     UserModel userModel = UserModel.fromJson(jsonDecode(data));
     userData = userModel;
     return userModel;
@@ -44,9 +43,7 @@ class AuthController {
     String? token = await getUserAccessToken();
 
     if (token == null) return false;
-
     accessToken = token;
-
     userData = await getUserData();
     return true;
   }

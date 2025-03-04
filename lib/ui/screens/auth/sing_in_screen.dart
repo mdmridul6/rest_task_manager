@@ -147,9 +147,9 @@ class _SingInScreenState extends State<SingInScreen> {
       }
       LoginModel loginModel = LoginModel.fromJson(response.responseData);
 
-      AuthController.saveUserAccessToken(loginModel.token!);
-      AuthController.saveUserData(loginModel.userModel!);
-      // loginModel.userModel = null;
+      await AuthController.saveUserAccessToken(loginModel.token!);
+      await AuthController.saveUserData(loginModel.userModel!);
+
 
       if (mounted) {
         Navigator.pushReplacement(
