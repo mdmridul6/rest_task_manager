@@ -23,6 +23,7 @@ class _SingInScreenState extends State<SingInScreen> {
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
+  bool loginRequestInProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +57,19 @@ class _SingInScreenState extends State<SingInScreen> {
                       keyboardType: TextInputType.visiblePassword,
                     ),
                     SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_fromKey.currentState!.validate()) {
-                          _onTapSingInButton();
-                        }
-                      },
-                      child: Icon(
-                        Icons.arrow_circle_right_outlined,
-                        color: Colors.white,
+                    Visibility(
+                      visible: loginRequestInProgress == false,
+                      replacement: Center(child: CircularProgressIndicator()),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_fromKey.currentState!.validate()) {
+                            _onTapSingInButton();
+                          }
+                        },
+                        child: Icon(
+                          Icons.arrow_circle_right_outlined,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     SizedBox(height: 16),
@@ -120,6 +125,12 @@ class _SingInScreenState extends State<SingInScreen> {
   }
 
   Future<void> _singInRequest() async {
+    loginRequestInProgress = true;
+
+    if (mounted) {
+      setState(() {});
+    }
+
     Map<String, String> inputBody = {
       'email': _emailTEController.text.trim(),
       'password': _passwordTEController.text,
@@ -130,6 +141,10 @@ class _SingInScreenState extends State<SingInScreen> {
     );
 
     if (response.statusCode == 200 && response.isSuccess == true) {
+      loginRequestInProgress = false;
+      if (mounted) {
+        setState(() {});
+      }
       LoginModel loginModel = LoginModel.fromJson(response.responseData);
 
       AuthController.saveUserAccessToken(loginModel.token!);
@@ -144,6 +159,11 @@ class _SingInScreenState extends State<SingInScreen> {
       }
     } else {
       if (mounted) {
+        loginRequestInProgress = false;
+
+        if (mounted) {
+          setState(() {});
+        }
         showSnackBarMessage(
           context,
           response.errorMessage ?? "User credentials does not match",

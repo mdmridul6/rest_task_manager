@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:rest_task_manager/ui/widgets/background_widget.dart';
-import 'package:rest_task_manager/ui/widgets/profile_app_bar.dart';
+import 'package:rest_task_manager/data/model/network_response.dart';
+import 'package:rest_task_manager/data/model/task_list_wraper_model.dart';
+import 'package:rest_task_manager/data/model/task_model.dart';
+import 'package:rest_task_manager/data/network_caller/network_caller.dart';
+import 'package:rest_task_manager/data/utility/app_urls.dart';
+import 'package:rest_task_manager/ui/screens/tasks/add_new_task_screen.dart';
+import 'package:rest_task_manager/ui/utility/app_color.dart';
+import 'package:rest_task_manager/ui/widgets/show_shack_bar_message.dart';
+import 'package:rest_task_manager/ui/widgets/task_item.dart';
+import 'package:rest_task_manager/ui/widgets/task_summery_card.dart';
 
 class NewTaskScreen extends StatefulWidget {
   const NewTaskScreen({super.key});
@@ -10,33 +18,101 @@ class NewTaskScreen extends StatefulWidget {
 }
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
+  bool _getNewTaskInProgress = false;
+  List<TaskModel> newTaskList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getNewTaskList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: profileAppBar(context),
-      body: BackgroundWidget(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _getNewTaskList();
+        },
+
         child: Padding(
           padding: EdgeInsets.all(16),
-          child: SingleChildScrollView(
+          child: Visibility(
+            visible: _getNewTaskInProgress == false,
+            replacement: Center(child: CircularProgressIndicator()),
             child: Column(
               children: [
-                TextFormField(decoration: InputDecoration(hintText: 'Title')),
+                _buildSummerySection(),
                 const SizedBox(height: 8),
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Description'),
-                  maxLines: 4,
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: newTaskList.length,
+                    itemBuilder: (context, index) {
+                      return TaskItem(taskItem: newTaskList[index]);
+                    },
+                  ),
                 ),
-                const SizedBox(height: 8),
-                ElevatedButton(onPressed: _onTapAddButton, child: Text('Add')),
               ],
             ),
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: AppColor.primaryColor,
+        foregroundColor: AppColor.whiteColor,
+        onPressed: _onTapFloatingActionButton,
+        label: Text('Add Task'),
+        icon: Icon(Icons.add),
+      ),
     );
   }
 
-  void _onTapAddButton() {
-    Navigator.pop(context);
+  SingleChildScrollView _buildSummerySection() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          TaskSummeryCard(title: 'New Task', count: '34'),
+          TaskSummeryCard(title: 'Completed', count: '34'),
+          TaskSummeryCard(title: 'In Progress', count: '34'),
+          TaskSummeryCard(title: 'Cancel', count: '34'),
+        ],
+      ),
+    );
   }
+
+  void _onTapFloatingActionButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddNewTaskScreen()),
+    );
+  }
+
+  Future<void> _getNewTaskList() async {
+    _getNewTaskInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
+
+    NetworkResponse response = await NetworkCaller.getRequest(
+      AppUrls.newTaskList,
+    );
+
+    if (response.isSuccess && response.statusCode == 200) {
+      _getNewTaskInProgress = false;
+
+      TaskListWraperModel taskListWraperModel = TaskListWraperModel.fromJson(
+        response.responseData,
+      );
+      newTaskList = taskListWraperModel.taskList ?? [];
+    } else {
+      if (mounted) {
+        showSnackBarMessage(context, response.errorMessage ?? "No Task Found");
+      }
+    }
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
 }

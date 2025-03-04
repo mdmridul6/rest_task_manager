@@ -30,7 +30,10 @@ AppBar profileAppBar(context, [bool isUpdateProfile = false]) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(AuthController.userData?.fullName ?? '', style: TextStyle(fontSize: 16, color: Colors.white)),
+          Text(
+            AuthController.userData?.fullName ?? '',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
           Text(
             AuthController.userData?.email ?? '',
             style: TextStyle(
@@ -45,7 +48,7 @@ AppBar profileAppBar(context, [bool isUpdateProfile = false]) {
     actions: [
       IconButton(
         onPressed: () async {
-
+          await AuthController.clearAllData();
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => SingInScreen()),
