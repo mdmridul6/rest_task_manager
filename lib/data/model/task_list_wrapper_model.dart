@@ -1,13 +1,13 @@
 import 'package:rest_task_manager/data/model/task_model.dart';
 
-class TaskListWraperModel {
+class TaskListWrapperModel {
   bool? status;
   List<TaskModel>? taskList;
   String? errorMessage;
 
-  TaskListWraperModel({this.status, this.taskList, this.errorMessage});
+  TaskListWrapperModel({this.status, this.taskList, this.errorMessage});
 
-  TaskListWraperModel.fromJson(Map<String, dynamic> json) {
+  TaskListWrapperModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
       taskList = <TaskModel>[];

@@ -4,7 +4,7 @@ class AppUrls {
   static const String logInUrl = "$rootUrls/login";
   static const String newTaskList = "$rootUrls/task/new";
   static const String inProgressTaskList = "$rootUrls/task/inProgress";
-  static const String completeTaskList = "$rootUrls/task/complete";
+  static const String completeTaskList = "$rootUrls/task/completed";
   static const String canceledTaskList = "$rootUrls/task/canceled";
   static const String postCreate = "$rootUrls/task/create";
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rest_task_manager/data/model/network_response.dart';
-import 'package:rest_task_manager/data/model/task_list_wraper_model.dart';
+import 'package:rest_task_manager/data/model/task_list_wrapper_model.dart';
 import 'package:rest_task_manager/data/model/task_model.dart';
 import 'package:rest_task_manager/data/network_caller/network_caller.dart';
 import 'package:rest_task_manager/data/utility/app_urls.dart';
@@ -52,10 +52,10 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
     if (response.isSuccess && response.statusCode == 200) {
       getCompletedTaskInProgress = false;
 
-      TaskListWraperModel taskListWraperModel = TaskListWraperModel.fromJson(
+      TaskListWrapperModel taskListWrapperModel = TaskListWrapperModel.fromJson(
         response.responseData,
       );
-      completedTaskList = taskListWraperModel.taskList ?? [];
+      completedTaskList = taskListWrapperModel.taskList ?? [];
     } else {
       if (mounted) {
         showSnackBarMessage(context, response.errorMessage ?? "No Task Found");

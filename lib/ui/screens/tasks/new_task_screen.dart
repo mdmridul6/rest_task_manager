@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rest_task_manager/data/model/network_response.dart';
-import 'package:rest_task_manager/data/model/task_list_wraper_model.dart';
+import 'package:rest_task_manager/data/model/task_list_wrapper_model.dart';
 import 'package:rest_task_manager/data/model/task_model.dart';
 import 'package:rest_task_manager/data/network_caller/network_caller.dart';
 import 'package:rest_task_manager/data/utility/app_urls.dart';
@@ -101,7 +101,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     if (response.isSuccess && response.statusCode == 200) {
       _getNewTaskInProgress = false;
 
-      TaskListWraperModel taskListWraperModel = TaskListWraperModel.fromJson(
+      TaskListWrapperModel taskListWraperModel = TaskListWrapperModel.fromJson(
         response.responseData,
       );
       newTaskList = taskListWraperModel.taskList ?? [];
