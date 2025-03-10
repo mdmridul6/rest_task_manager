@@ -23,6 +23,8 @@ class AuthController {
   static Future<void> saveUserData(UserModel user) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString(_userDataKey, jsonEncode(user.toJson()));
+    userData = user;
+
   }
 
   static Future<UserModel?> getUserData() async {
@@ -30,7 +32,6 @@ class AuthController {
     String? data = sharedPreferences.getString(_userDataKey);
     if (data == null) return null;
     UserModel userModel = UserModel.fromJson(jsonDecode(data));
-    userData = userModel;
     return userModel;
   }
 

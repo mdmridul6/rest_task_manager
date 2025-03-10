@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rest_task_manager/data/model/network_response.dart';
+import 'package:rest_task_manager/data/model/task_count_wrapper_model.dart';
+import 'package:rest_task_manager/data/model/task_list_count_model.dart';
 import 'package:rest_task_manager/data/model/task_list_wrapper_model.dart';
 import 'package:rest_task_manager/data/model/task_model.dart';
 import 'package:rest_task_manager/data/network_caller/network_caller.dart';
@@ -20,11 +22,13 @@ class NewTaskScreen extends StatefulWidget {
 class _NewTaskScreenState extends State<NewTaskScreen> {
   bool _getNewTaskInProgress = false;
   List<TaskModel> newTaskList = [];
+  List<TaskListCountModel> taskListCount = [];
 
   @override
   void initState() {
     super.initState();
     _getNewTaskList();
+    _getTaskCount();
   }
 
   @override
@@ -33,6 +37,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       body: RefreshIndicator(
         onRefresh: () async {
           _getNewTaskList();
+          _getTaskCount();
         },
 
         child: Padding(
@@ -71,12 +76,13 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: [
-          TaskSummeryCard(title: 'New Task', count: '34'),
-          TaskSummeryCard(title: 'Completed', count: '34'),
-          TaskSummeryCard(title: 'In Progress', count: '34'),
-          TaskSummeryCard(title: 'Cancel', count: '34'),
-        ],
+        children:
+            taskListCount.map((element) {
+              return TaskSummeryCard(
+                title: element.status ?? "Unknown",
+                count: element.count.toString(),
+              );
+            }).toList(),
       ),
     );
   }
@@ -115,4 +121,18 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     }
   }
 
+  Future<void> _getTaskCount() async {
+    NetworkResponse response = await NetworkCaller.getRequest(
+      AppUrls.countTaskList,
+    );
+
+    if (response.isSuccess && response.statusCode == 200) {
+      TaskCountWrapperModel taskCountWrapperModel =
+          TaskCountWrapperModel.fromJson(response.responseData);
+      taskListCount = taskCountWrapperModel.taskListCountModel ?? [];
+    }
+    if (mounted) {
+      setState(() {});
+    }
+  }
 }
