@@ -32,7 +32,9 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
         child: ListView.builder(
           itemCount: completedTaskList.length,
           itemBuilder: (context, index) {
-            return TaskItem(taskItem: completedTaskList[index]);
+            return TaskItem(taskItem: completedTaskList[index], onDeleteTask: () { 
+              _getCompletedTaskList();
+             },);
           },
         ),
       ),

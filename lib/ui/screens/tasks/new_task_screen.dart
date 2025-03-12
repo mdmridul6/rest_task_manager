@@ -21,6 +21,7 @@ class NewTaskScreen extends StatefulWidget {
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
   bool _getNewTaskInProgress = false;
+  bool _getTaskCountInProgress = false;
   List<TaskModel> newTaskList = [];
   List<TaskListCountModel> taskListCount = [];
 
@@ -53,7 +54,13 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                   child: ListView.builder(
                     itemCount: newTaskList.length,
                     itemBuilder: (context, index) {
-                      return TaskItem(taskItem: newTaskList[index]);
+                      return TaskItem(
+                        taskItem: newTaskList[index],
+                        onDeleteTask: () {
+                          _getNewTaskList();
+                          _getTaskCount();
+                        },
+                      );
                     },
                   ),
                 ),
@@ -75,14 +82,18 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   SingleChildScrollView _buildSummerySection() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Row(
-        children:
-            taskListCount.map((element) {
-              return TaskSummeryCard(
-                title: element.status ?? "Unknown",
-                count: element.count.toString(),
-              );
-            }).toList(),
+      child: Visibility(
+        visible: _getTaskCountInProgress == false,
+        replacement: Center(child: CircularProgressIndicator()),
+        child: Row(
+          children:
+              taskListCount.map((element) {
+                return TaskSummeryCard(
+                  title: element.status ?? "Unknown",
+                  count: element.count.toString(),
+                );
+              }).toList(),
+        ),
       ),
     );
   }
@@ -122,6 +133,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   }
 
   Future<void> _getTaskCount() async {
+    _getTaskCountInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
     NetworkResponse response = await NetworkCaller.getRequest(
       AppUrls.countTaskList,
     );
@@ -131,6 +146,8 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
           TaskCountWrapperModel.fromJson(response.responseData);
       taskListCount = taskCountWrapperModel.taskListCountModel ?? [];
     }
+
+    _getTaskCountInProgress = false;
     if (mounted) {
       setState(() {});
     }

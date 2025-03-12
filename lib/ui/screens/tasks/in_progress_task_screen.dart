@@ -30,7 +30,9 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
       body: ListView.builder(
         itemCount: inProgressTaskList.length,
         itemBuilder: (context, index) {
-          return TaskItem(taskItem: inProgressTaskList[index]);
+          return TaskItem(taskItem: inProgressTaskList[index], onDeleteTask: () { 
+            _getInProgressTaskList();
+           },);
         },
       ),
     );
