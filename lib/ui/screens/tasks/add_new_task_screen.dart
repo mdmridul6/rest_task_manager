@@ -98,7 +98,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       if (mounted) {
         setState(() {});
         _clearInputsFields();
-        Navigator.pop(context);
+        Navigator.pop(context,true);
       }
     } else {
       if (mounted) {

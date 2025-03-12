@@ -29,13 +29,20 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
       body: Visibility(
         visible: getCompletedTaskInProgress == false,
         replacement: Center(child: CircularProgressIndicator()),
-        child: ListView.builder(
-          itemCount: completedTaskList.length,
-          itemBuilder: (context, index) {
-            return TaskItem(taskItem: completedTaskList[index], onDeleteTask: () { 
-              _getCompletedTaskList();
-             },);
-          },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Visibility(
+            visible: getCompletedTaskInProgress == false,
+            replacement: Center(child: CircularProgressIndicator()),
+            child: ListView.builder(
+              itemCount: completedTaskList.length,
+              itemBuilder: (context, index) {
+                return TaskItem(taskItem: completedTaskList[index], onDeleteTask: () {
+                  _getCompletedTaskList();
+                 },);
+              },
+            ),
+          ),
         ),
       ),
     );

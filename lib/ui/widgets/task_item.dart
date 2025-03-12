@@ -52,6 +52,8 @@ class _TaskItemState extends State<TaskItem> {
                 ),
                 OverflowBar(
                   children: [
+                    IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+
                     Visibility(
                       visible: _deleteInProgress == false,
                       replacement: Center(child: CircularProgressIndicator()),
@@ -59,10 +61,9 @@ class _TaskItemState extends State<TaskItem> {
                         onPressed: () {
                           _deleteTask();
                         },
-                        icon: Icon(Icons.edit),
+                        icon: Icon(Icons.delete),
                       ),
                     ),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
                   ],
                 ),
               ],

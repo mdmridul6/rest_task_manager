@@ -27,16 +27,23 @@ class _CanceledTaskScreenState extends State<CanceledTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: canceledTaskList.length,
-        itemBuilder: (context, index) {
-          return TaskItem(
-            taskItem: canceledTaskList[index],
-            onDeleteTask: () {
-              _getCanceledTaskList();
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Visibility(
+          visible: getCanceledTaskInProgress == false,
+          replacement: Center(child: CircularProgressIndicator()),
+          child: ListView.builder(
+            itemCount: canceledTaskList.length,
+            itemBuilder: (context, index) {
+              return TaskItem(
+                taskItem: canceledTaskList[index],
+                onDeleteTask: () {
+                  _getCanceledTaskList();
+                },
+              );
             },
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -54,10 +61,10 @@ class _CanceledTaskScreenState extends State<CanceledTaskScreen> {
     if (response.isSuccess && response.statusCode == 200) {
       getCanceledTaskInProgress = false;
 
-      TaskListWrapperModel taskListWraperModel = TaskListWrapperModel.fromJson(
+      TaskListWrapperModel taskListWrapperModel = TaskListWrapperModel.fromJson(
         response.responseData,
       );
-      canceledTaskList = taskListWraperModel.taskList ?? [];
+      canceledTaskList = taskListWrapperModel.taskList ?? [];
     } else {
       if (mounted) {
         showSnackBarMessage(context, response.errorMessage ?? "No Task Found");

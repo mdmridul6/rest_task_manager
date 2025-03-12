@@ -42,7 +42,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         },
 
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(8),
           child: Visibility(
             visible: _getNewTaskInProgress == false,
             replacement: Center(child: CircularProgressIndicator()),
@@ -98,11 +98,17 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 
-  void _onTapFloatingActionButton() {
-    Navigator.push(
+  Future<void> _onTapFloatingActionButton() async {
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => AddNewTaskScreen()),
     );
+
+    if(result == true){
+      _getNewTaskList();
+      _getTaskCount();
+
+    }
   }
 
   Future<void> _getNewTaskList() async {
@@ -118,10 +124,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     if (response.isSuccess && response.statusCode == 200) {
       _getNewTaskInProgress = false;
 
-      TaskListWrapperModel taskListWraperModel = TaskListWrapperModel.fromJson(
+      TaskListWrapperModel taskListWrapperModel = TaskListWrapperModel.fromJson(
         response.responseData,
       );
-      newTaskList = taskListWraperModel.taskList ?? [];
+      newTaskList = taskListWrapperModel.taskList ?? [];
     } else {
       if (mounted) {
         showSnackBarMessage(context, response.errorMessage ?? "No Task Found");

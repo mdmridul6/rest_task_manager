@@ -27,13 +27,23 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: inProgressTaskList.length,
-        itemBuilder: (context, index) {
-          return TaskItem(taskItem: inProgressTaskList[index], onDeleteTask: () { 
-            _getInProgressTaskList();
-           },);
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Visibility(
+          visible: getInProgressTaskInProgress == false,
+          replacement: Center(child: CircularProgressIndicator()),
+          child: ListView.builder(
+            itemCount: inProgressTaskList.length,
+            itemBuilder: (context, index) {
+              return TaskItem(
+                taskItem: inProgressTaskList[index],
+                onDeleteTask: () {
+                  _getInProgressTaskList();
+                },
+              );
+            },
+          ),
+        ),
       ),
     );
   }
@@ -51,10 +61,10 @@ class _InProgressTaskScreenState extends State<InProgressTaskScreen> {
     if (response.isSuccess && response.statusCode == 200) {
       getInProgressTaskInProgress = false;
 
-      TaskListWrapperModel taskListWraperModel = TaskListWrapperModel.fromJson(
+      TaskListWrapperModel taskListWrapperModel = TaskListWrapperModel.fromJson(
         response.responseData,
       );
-      inProgressTaskList = taskListWraperModel.taskList ?? [];
+      inProgressTaskList = taskListWrapperModel.taskList ?? [];
     } else {
       if (mounted) {
         showSnackBarMessage(context, response.errorMessage ?? "No Task Found");
