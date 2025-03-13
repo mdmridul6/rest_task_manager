@@ -21,7 +21,7 @@ class TaskItem extends StatefulWidget {
 
 class _TaskItemState extends State<TaskItem> {
   bool _deleteInProgress = false;
-  bool _eidtInProgress = false;
+  bool _editInProgress = false;
   List<String> taskStatus = ['New', 'Completed', 'In Progress', 'Canceled'];
 
   String dropDownValue = "";
@@ -63,29 +63,33 @@ class _TaskItemState extends State<TaskItem> {
                 ),
                 OverflowBar(
                   children: [
-                    PopupMenuButton<String>(
-                      initialValue: dropDownValue,
-                      onSelected: (String value) {
-                        dropDownValue = value;
-                        _editTask();
-                        if (mounted) {
-                          setState(() {});
-                        }
-                      },
-                      itemBuilder:
-                          (context) =>
-                              taskStatus.map((element) {
-                                return PopupMenuItem<String>(
-                                  value: element,
-                                  child: ListTile(
-                                    title: Text(element),
-                                    trailing:
-                                        dropDownValue == element
-                                            ? Icon(Icons.check)
-                                            : null,
-                                  ),
-                                );
-                              }).toList(),
+                    Visibility(
+                      visible: _editInProgress == false,
+                      replacement: Center(child: CircularProgressIndicator()),
+                      child: PopupMenuButton<String>(
+                        initialValue: dropDownValue,
+                        onSelected: (String value) {
+                          dropDownValue = value;
+                          _editTask();
+                          if (mounted) {
+                            setState(() {});
+                          }
+                        },
+                        itemBuilder:
+                            (context) =>
+                                taskStatus.map((element) {
+                                  return PopupMenuItem<String>(
+                                    value: element,
+                                    child: ListTile(
+                                      title: Text(element),
+                                      trailing:
+                                          dropDownValue == element
+                                              ? Icon(Icons.check)
+                                              : null,
+                                    ),
+                                  );
+                                }).toList(),
+                      ),
                     ),
 
                     Visibility(
@@ -128,23 +132,23 @@ class _TaskItemState extends State<TaskItem> {
     }
   }
 
-   Future<void> _editTask() async {
-    _eidtInProgress = true;
+  Future<void> _editTask() async {
+    _editInProgress = true;
     if (mounted) {
       setState(() {});
     }
 
-
-    Map<String,String> inputData={
-      'status':dropDownValue
-    };
-    NetworkResponse response = await NetworkCaller.postRequest();
+    Map<String, String> inputData = {'status': dropDownValue};
+    NetworkResponse response = await NetworkCaller.postRequest(
+      AppUrls.updateTask(widget.taskItem.id!),
+      inputData,
+    );
 
     if (response.isSuccess && response.statusCode == 200) {
       widget.onDeleteTask();
     }
 
-    _eidtInProgress = false;
+    _editInProgress = false;
     if (mounted) {
       showSnackBarMessage(context, "Task Update Successfully");
       setState(() {});
