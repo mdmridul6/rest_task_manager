@@ -25,6 +25,7 @@ class _TaskItemState extends State<TaskItem> {
   List<String> taskStatus = ['New', 'Completed', 'In Progress', 'Canceled'];
 
   String dropDownValue = "";
+  String selectedValue="";
 
   @override
   void setState(VoidCallback fn) {
@@ -69,11 +70,11 @@ class _TaskItemState extends State<TaskItem> {
                       child: PopupMenuButton<String>(
                         initialValue: dropDownValue,
                         onSelected: (String value) {
-                          dropDownValue = value;
-                          _editTask();
+                          selectedValue = value;
                           if (mounted) {
                             setState(() {});
                           }
+                          _editTask();
                         },
                         itemBuilder:
                             (context) =>
@@ -138,7 +139,7 @@ class _TaskItemState extends State<TaskItem> {
       setState(() {});
     }
 
-    Map<String, String> inputData = {'status': dropDownValue};
+    Map<String, String> inputData = {'status': selectedValue};
     NetworkResponse response = await NetworkCaller.postRequest(
       AppUrls.updateTask(widget.taskItem.id!),
       inputData,
