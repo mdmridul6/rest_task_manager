@@ -8,5 +8,6 @@ class AppUrls {
   static const String completeTaskList = "$rootUrls/task/completed";
   static const String canceledTaskList = "$rootUrls/task/canceled";
   static const String postCreate = "$rootUrls/task/create";
+  static String updateTask(int id) => "$rootUrls/task/update/$id";
   static String deleteTask(int id) => "$rootUrls/task/delete/$id";
 }

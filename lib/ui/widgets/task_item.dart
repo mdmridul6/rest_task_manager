@@ -21,6 +21,17 @@ class TaskItem extends StatefulWidget {
 
 class _TaskItemState extends State<TaskItem> {
   bool _deleteInProgress = false;
+  bool _eidtInProgress = false;
+  List<String> taskStatus = ['New', 'Completed', 'In Progress', 'Canceled'];
+
+  String dropDownValue = "";
+
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+    dropDownValue = widget.taskItem.status!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +63,30 @@ class _TaskItemState extends State<TaskItem> {
                 ),
                 OverflowBar(
                   children: [
-                    IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                    PopupMenuButton<String>(
+                      initialValue: dropDownValue,
+                      onSelected: (String value) {
+                        dropDownValue = value;
+                        _editTask();
+                        if (mounted) {
+                          setState(() {});
+                        }
+                      },
+                      itemBuilder:
+                          (context) =>
+                              taskStatus.map((element) {
+                                return PopupMenuItem<String>(
+                                  value: element,
+                                  child: ListTile(
+                                    title: Text(element),
+                                    trailing:
+                                        dropDownValue == element
+                                            ? Icon(Icons.check)
+                                            : null,
+                                  ),
+                                );
+                              }).toList(),
+                    ),
 
                     Visibility(
                       visible: _deleteInProgress == false,
@@ -90,6 +124,29 @@ class _TaskItemState extends State<TaskItem> {
     _deleteInProgress = false;
     if (mounted) {
       showSnackBarMessage(context, "Task delete Successfully");
+      setState(() {});
+    }
+  }
+
+   Future<void> _editTask() async {
+    _eidtInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
+
+
+    Map<String,String> inputData={
+      'status':dropDownValue
+    };
+    NetworkResponse response = await NetworkCaller.postRequest();
+
+    if (response.isSuccess && response.statusCode == 200) {
+      widget.onDeleteTask();
+    }
+
+    _eidtInProgress = false;
+    if (mounted) {
+      showSnackBarMessage(context, "Task Update Successfully");
       setState(() {});
     }
   }
