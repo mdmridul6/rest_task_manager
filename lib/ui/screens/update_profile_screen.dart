@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rest_task_manager/ui/widgets/background_widget.dart';
 import 'package:rest_task_manager/ui/widgets/profile_app_bar.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
@@ -15,6 +16,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final TextEditingController _lastNameTEController = TextEditingController();
   final TextEditingController _phoneTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
+
+  XFile? selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -79,34 +82,54 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   Widget _buildPhotoPickerWidget() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      height: 48,
-      width: double.maxFinite,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(8),
-          bottomRight: Radius.circular(8),
-        ),
-      ),
+    return GestureDetector(
+      onTap: _onTapPhotoPicker,
       child: Container(
+        alignment: Alignment.centerLeft,
         height: 48,
-        width: 100,
-        alignment: Alignment.center,
+        width: double.maxFinite,
         decoration: BoxDecoration(
-          color: Colors.grey,
+          color: Colors.white,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8),
-            bottomLeft: Radius.circular(8),
+            topRight: Radius.circular(8),
+            bottomRight: Radius.circular(8),
           ),
         ),
-        child: const Text('Photo', style: TextStyle(color: Colors.white)),
+        child: Row(
+          children: [
+            Container(
+              height: 48,
+              width: 100,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  bottomLeft: Radius.circular(8),
+                ),
+              ),
+              child: const Text('Photo', style: TextStyle(color: Colors.white)),
+            ),
+            const SizedBox(width: 10),
+            Text(selectedImage?.name ?? "No Image Selected"),
+          ],
+        ),
       ),
     );
   }
 
   void _onTapUpdateProfileButton() {}
+
+  Future<void> _onTapPhotoPicker() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    selectedImage = pickedFile;
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   void dispose() {

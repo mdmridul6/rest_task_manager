@@ -29,7 +29,6 @@ class _TaskItemState extends State<TaskItem> {
 
   @override
   void setState(VoidCallback fn) {
-    // TODO: implement setState
     super.setState(fn);
     dropDownValue = widget.taskItem.status!;
   }
