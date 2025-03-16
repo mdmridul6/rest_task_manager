@@ -8,7 +8,7 @@ void showSnackBarMessage(
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),
-      backgroundColor: isError ? Colors.green : Colors.red,
+      backgroundColor: isError ? Colors.red : Colors.green,
     ),
   );
 }
