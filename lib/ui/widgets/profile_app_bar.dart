@@ -1,9 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:rest_task_manager/ui/controller/auth_controller.dart';
 import 'package:rest_task_manager/ui/screens/auth/sing_in_screen.dart';
 import 'package:rest_task_manager/ui/screens/update_profile_screen.dart';
 import 'package:rest_task_manager/ui/utility/app_color.dart';
-import 'package:rest_task_manager/ui/widgets/network_cashed_image.dart';
 
 AppBar profileAppBar(context, [bool isUpdateProfile = false]) {
   return AppBar(
@@ -11,9 +12,11 @@ AppBar profileAppBar(context, [bool isUpdateProfile = false]) {
     leading: Padding(
       padding: const EdgeInsets.all(8),
       child: CircleAvatar(
-        child: NetworkCashedImage(
-          url:
-              'https://www.torrentbd.net/posters/C1dcoocS8XLX4WZpxZRfDwYY32176689.jpg',
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: Image.memory(
+            base64Decode(AuthController.userData?.photo ?? ""),
+          ),
         ),
       ),
     ),

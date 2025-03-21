@@ -91,7 +91,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     visible: _profileUpdateInProgress == false,
                     replacement: Center(child: CircularProgressIndicator()),
                     child: ElevatedButton(
-                      onPressed: () => _onTapUpdateProfileButton,
+                      onPressed: _updateProfile,
                       child: Icon(
                         Icons.arrow_circle_right_outlined,
                         color: Colors.white,
@@ -150,8 +150,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-  void _onTapUpdateProfileButton() {}
-
   Future<void> _onTapPhotoPicker() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(
@@ -166,8 +164,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     }
   }
 
-  Future<void> updateProfile() async {
+  Future<void> _updateProfile() async {
     _profileUpdateInProgress = true;
+    if (mounted) {
+      setState(() {});
+    }
     String encodedImage = AuthController.userData?.photo ?? "";
     Map<String, dynamic> input = {
       "first_name": _firstNameTEController.text.trim(),
@@ -176,7 +177,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       "mobile": _phoneTEController.text.trim(),
     };
 
-    if (_passwordTEController.text != null) {
+    if (_passwordTEController.text !== null) {
       input['password'] = _passwordTEController.text;
     }
 
@@ -191,7 +192,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       input,
     );
 
-    if (response.isSuccess && response.statusCode == 200) {
+    if (response.isSuccess && response.statusCode == 201) {
       UserModel userModel = UserModel(
         email: _emailTEController.text.trim(),
         firstName: _firstNameTEController.text.trim(),
@@ -199,15 +200,24 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         mobile: _phoneTEController.text.trim(),
         photo: encodedImage,
       );
-      AuthController.saveUserData(userModel);
+      await AuthController.saveUserData(userModel);
       if (mounted) {
         showSnackBarMessage(context, "Profile Updated Successfully");
         setState(() {});
+        Navigator.pop(context);
       }
     } else {
       if (mounted) {
-        showSnackBarMessage(context, "Profile Updated Failed");
+        showSnackBarMessage(
+          context,
+          response.errorMessage ?? "Profile Updated Failed",
+          true,
+        );
       }
+    }
+    _profileUpdateInProgress = false;
+    if (mounted) {
+      setState(() {});
     }
   }
 
