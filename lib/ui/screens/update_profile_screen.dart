@@ -177,7 +177,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       "mobile": _phoneTEController.text.trim(),
     };
 
-    if (_passwordTEController.text !== null) {
+    if (_passwordTEController.text != null) {
       input['password'] = _passwordTEController.text;
     }
 
